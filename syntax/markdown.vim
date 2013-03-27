@@ -84,6 +84,10 @@ syn region markdownCode matchgroup=markdownCodeDelimiter start="`" end="`" keepe
 syn region markdownCode matchgroup=markdownCodeDelimiter start="`` \=" end=" \=``" keepend contains=markdownLineStart
 syn region markdownCode matchgroup=markdownCodeDelimiter start="^\s*```.*$" end="^\s*```\ze\s*$" keepend
 
+" Stolen from Hallison's vim-markdown
+syn region markdownCode start=/\\\@<!`[^`]\@=/ end=/\\\@<![^`]`/
+syn region markdownCode start=/\s*``[^`]*/  end=/[^`]*``\s*/
+
 if main_syntax ==# 'markdown'
   for s:type in g:markdown_fenced_languages
     exe 'syn region markdownHighlight'.substitute(matchstr(s:type,'[^=]*$'),'\..*','','').' matchgroup=markdownCodeDelimiter start="^\s*```'.matchstr(s:type,'[^=]*').'\>.*$" end="^\s*```\ze\s*$" keepend contains=@markdownHighlight'.substitute(matchstr(s:type,'[^=]*$'),'\.','','g')
@@ -124,6 +128,8 @@ hi def link markdownCodeDelimiter         Delimiter
 
 hi def link markdownEscape                Special
 hi def link markdownError                 Error
+
+hi def link markdownCode                  String
 
 let b:current_syntax = "markdown"
 
